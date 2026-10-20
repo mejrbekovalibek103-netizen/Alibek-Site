@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Алибек - разработчик и программист</title>
+  <meta name="description" content="Алибек - разработчик, программист и VibeCode-программист. Сайты, приложения и игры на стыке кода и искусственного интеллекта.">
+  <meta name="theme-color" content="#06060a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Алибек - разработчик и программист">
+  <meta property="og:description" content="Не просто VibeCoding: проверяю, понимаю и улучшаю то, что дает ИИ.">
+  <!-- Иконка вкладки: путь относительный — файл лежит рядом с site.html -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    // Включаем JS-анимации. Если script.js не загрузится за 5 секунд —
+    // убираем класс .js, и сайт просто покажется без эффектов.
+    document.documentElement.classList.add('js');
+    setTimeout(function () {
+      if (!window.__siteReady) document.documentElement.classList.remove('js');
+    }, 5000);
+  </script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main" data-en="Skip to content">Перейти к содержимому</a>
+
+  <!-- ===== Прелоадер ===== -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <div class="preloader__name">Loading</div>
+      <div class="preloader__bar"><span></span></div>
+      <div class="preloader__count"><span id="preloaderCount">0</span>%</div>
+    </div>
+  </div>
+
+  <!-- ===== Фон: WebGL-аврора + сетка + зерно ===== -->
+  <canvas class="bg-canvas" id="bgCanvas" aria-hidden="true"></canvas>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <!-- ===== Кастомный курсор: точка + треугольник, который поворачивается по направлению движения ===== -->
+  <div class="cursor is-hidden" aria-hidden="true">
+    <div class="cursor__dot"></div>
+    <div class="cursor__triangle">
+      <svg class="cursor__shape" viewBox="0 0 100 100"><polygon points="50,6 88,72 12,72"/></svg>
+      <span class="cursor__label"></span>
+    </div>
+  </div>
+
+  <!-- ===== Навигация ===== -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo" data-magnetic aria-label="Alibek — наверх">A<span>.</span></a>
+
+    <nav class="nav__links" aria-label="Основная навигация">
+      <a href="#about" data-en="About">Обо мне</a>
+      <a href="#skills" data-en="Skills">Навыки</a>
+      <a href="#achievements" data-en="Achievements">Достижения</a>
+      <a href="#contact" data-en="Contact">Контакты</a>
+    </nav>
+
+    <div class="nav__actions">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language to English">
+        <span class="is-active">RU</span><span>EN</span>
+      </button>
+      <a href="#contact" class="btn btn--small" data-magnetic><span data-en="Let's talk">Связаться</span></a>
+      <button class="burger" id="burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="#about"><i>01</i><span data-en="About">Обо мне</span></a>
+    <a href="#skills"><i>02</i><span data-en="Skills">Навыки</span></a>
+    <a href="#achievements"><i>03</i><span data-en="Achievements">Достижения</span></a>
+    <a href="#contact"><i>04</i><span data-en="Contact">Контакты</span></a>
+  </div>
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="top">
+      <div class="container">
+        <div class="hero__badge reveal-hero" style="--d:.1s">
+          <span class="pulse-dot"></span>
+          <span data-en="Open to projects &amp; new opportunities">Открыт к проектам и новым возможностям</span>
+        </div>
+
+        <!-- Угловые скобки экранированы: иначе браузер принимает <Hello, World> за HTML-тег и прячет текст -->
+        <p class="hero__hello reveal-hero" style="--d:.2s" data-en="// &amp;lt;Hello, World&amp;gt;, I'm">// &lt;Hello, World&gt;, я</p>
+        <h1 class="hero__name" data-split data-en="Alibek">Алибек</h1>
+
+        <div class="hero__row">
+          <div class="hero__intro">
+            <p class="hero__role reveal-hero" style="--d:.55s">
+              <span data-en="I'm">Я - </span> <span class="scramble" id="scramble">разработчик</span>
+            </p>
+            <p class="hero__text reveal-hero" style="--d:.65s" data-en="I build websites, apps and games where code meets artificial intelligence. I don't just vibe-code - I check, understand, investigate and improve what AI generates.">
+              Разрабатываю сайты, приложения и игры на стыке кода и искусственного интеллекта. Не просто VibeCoding - проверяю, разбираюсь, изучаю и улучшаю то, что генерирует ИИ.
+            </p>
+            <div class="hero__cta reveal-hero" style="--d:.75s">
+              <a href="#achievements" class="btn btn--primary" data-magnetic>
+                <span data-en="View projects">Смотреть проекты</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a href="#contact" class="btn btn--ghost" data-magnetic><span data-en="Contact me">Написать мне</span></a>
+            </div>
+          </div>
+
+          <div class="terminal reveal-hero" style="--d:.85s" data-tilt="5" role="img" aria-label="Фрагмент кода: объект alibek с ролью, стеком и проектами">
+            <div class="terminal__bar" aria-hidden="true">
+              <span></span><span></span><span></span>
+              <p>~/alibek/about.js</p>
+            </div>
+            <pre class="terminal__body" aria-hidden="true"><code class="terminal__ghost" id="codeGhost"></code><code class="terminal__typed" id="codeTyped"></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <a href="#about" class="scroll-hint" aria-label="Прокрутить вниз">
+        <span class="scroll-hint__mouse"></span>
+        <span data-en="Scroll">Листай</span>
+      </a>
+    </section>
+
+    <!-- ================= 01 — ОБО МНЕ ================= -->
+    <section class="section about" id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-head__num">01</span>
+          <span data-en="About me">Обо мне</span>
+        </div>
+
+        <div class="about__grid">
+          <aside class="profile reveal" data-tilt="4">
+            <div class="profile__avatar">
+              <img src="photo.jpg" alt="Алибек" width="480" height="480">
+            </div>
+            <h3 class="profile__name" data-en="Alibek">Алибек</h3>
+            <p class="profile__role">Developer · Programmer</p>
+            <ul class="profile__facts">
+              <li><span data-en="Status">Статус</span><b data-en="Student">Студент</b></li>
+              <li><span data-en="Focus">Фокус</span><b data-en="Web · Apps · Studies">Веб · Приложения · Учеба</b></li>
+              <li><span data-en="Skills">Навыки</span><b data-en="AI + soft skills">ИИ + softskills</b></li>
+              <li><span data-en="Right now">Сейчас</span><b data-en="2 projects in progress">2 проекта в работе</b></li>
+            </ul>
+          </aside>
+
+          <div class="about__content">
+            <p class="about__statement" data-words data-en="I believe <em>AI doesn't replace skills</em> - it boosts them. My main skill is turning ideas into <em>working products</em>: I give AI a precise task, break down the result and polish the code with my own hands.">Я верю, что <em>ИИ - не замена навыкам</em>, а их усилитель. Мой главный навык - превращать идеи в <em>работающие продукты</em>: ставлю ИИ точную задачу, разбираю результат и довожу код до ума своими руками.</p>
+
+            <p class="process-label reveal" data-en="// my approach to AI development">// мой подход к AI-разработке</p>
+            <div class="process">
+              <article class="process__step reveal" data-num="01">
+                <span class="process__num">01</span>
+                <h3 data-en="Prompt">Промпт</h3>
+                <p data-en="I frame the task, context and constraints so AI delivers a working result - not “something similar”.">Формулирую задачу, контекст и ограничения так, чтобы ИИ выдал рабочий результат, а не «что-то похожее».</p>
+              </article>
+              <article class="process__step reveal" data-num="02">
+                <span class="process__num">02</span>
+                <h3 data-en="Understand">Понимание</h3>
+                <p data-en="I read and try to understand the generated code: how it works, where it's weak and what can be done better.">Читаю и разбираю сгенерированный код: как он устроен, где слабые места и что можно сделать лучше.</p>
+              </article>
+              <article class="process__step reveal" data-num="03">
+                <span class="process__num">03</span>
+                <h3 data-en="Improve">Улучшение</h3>
+                <p data-en="I modify, develop and hand-write code until the product is exactly what I envision.">Модифицирую, оптимизирую и дописываю вручную - пока продукт не станет таким, каким я хочу его видеть.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 02 — НАВЫКИ ================= -->
+    <section class="section skills" id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-head__num">02</span>
+          <span data-en="Skills">Навыки</span>
+        </div>
+        <h2 class="section-title reveal" data-en="What I do <span class=&quot;grad&quot;>and take pride in</span>">Что я умею <span class="grad">и чем горжусь</span></h2>
+
+        <div class="bento" data-spotlight data-stagger>
+          <article class="card card--wide spot reveal">
+            <div class="card__deco card__deco--code" aria-hidden="true">&lt;/&gt;</div>
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+            <h3 data-en="Web development">Веб-разработка</h3>
+            <p data-en="Layout and interactivity with HTML, CSS and JavaScript: responsive interfaces, animations and effects — just like on this site.">Вёрстка и интерактив на HTML, CSS и JavaScript: адаптивные интерфейсы, анимации и эффекты - как на этом сайте.</p>
+            <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Responsive</span><span class="tag">WebGL</span></div>
+          </article>
+
+          <article class="card spot reveal">
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div>
+            <h3 data-en="Development with AI">Разработка с ИИ</h3>
+            <p data-en="I treat AI as a teammate: generate, review, refactor. AI speeds me up - I make the decisions.">Работаю с ИИ как с напарником: генерирую, ревьюю, рефакторю. ИИ ускоряет процесс - решения принимаю я.</p>
+            <div class="tags"><span class="tag">Claude</span><span class="tag">ChatGPT</span><span class="tag">Claude Code</span></div>
+          </article>
+
+          <article class="card spot reveal">
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+            <h3 data-en="Apps">Приложения</h3>
+            <p data-en="Building my own app: from idea and logic to the interface and first tests.">Разрабатываю собственное приложение: от идеи и логики до интерфейса и первых тестов.</p>
+            <div class="tags"><span class="tag" data-en="Code">Код</span><span class="tag" data-en="Logic">Логика</span><span class="tag" data-en="Architecture">Архитектура</span></div>
+          </article>
+
+          <article class="card card--wide spot reveal">
+            <div class="card__deco card__deco--chess" aria-hidden="true">&#9822;&#xFE0E;</div>
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.5" r="2.5"/><path d="M9 10h6"/><path d="M10.5 10c0 3.5-1.5 6-3 8h9c-1.5-2-3-4.5-3-8"/><rect x="6" y="18" width="12" height="3" rx="1"/></svg></div>
+            <h3 data-en="Chess">Играю в шахматы</h3>
+            <p data-en="I've been playing chess since I was 8-9. My prime era was at 11-12. Unfortunately, I gave it up, but I still play sometimes.">Играю в шахматы с 8-9 лет. Моя прайм эра была в 11-12 лет. К сожалению, забросил, но иногда играю.</p>
+            <div class="tags"><span class="tag" data-en="2nd category">2-й разряд</span><span class="tag" data-en="Tournaments">Соревнования</span><span class="tag" data-en="Good experience">Хороший опыт</span></div>
+          </article>
+
+          <article class="card card--wide spot reveal">
+            <div class="card__deco card__deco--tkd" aria-hidden="true">WTF</div>
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="9" width="20" height="4" rx="1"/><rect x="10" y="8" width="4" height="6" rx="1"/><path d="M11 14l-2 6M13 14l2 6"/></svg></div>
+            <h3 data-en="Taekwondo">Тхэквондо</h3>
+            <p data-en="I practiced taekwondo in 9th and 10th grades at school. I participated in competitions.">В 9-10 классах занимался тхэквондо. Участвовал в соревнованиях.</p>
+            <div class="tags"><span class="tag" data-en="Green belt">Зеленый пояс</span><span class="tag" data-en="Good flexibility">Хорошая растяжка</span><span class="tag" data-en="Tournaments">Соревнования</span></div>
+          </article>
+
+          <article class="card spot reveal">
+            <div class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <h3 data-en="Fast learner">Быстрое обучение</h3>
+            <p data-en="I learn by doing: every project is a level-up. I read docs, study other people's code and experiment.">Осваиваю технологии на практике: каждый проект - новый уровень. Читаю документацию, разбираю чужой код, пробую.</p>
+            <div class="tags"><span class="tag">Self-learning</span><span class="tag">Teamwork</span><span class="tag">English</span></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <div class="marquee__group">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Prompting</span><span>Claude</span><span>ChatGPT</span><span>Higgsfield</span><span>UI/UX</span><span>Game Dev</span>
+          </div>
+          <div class="marquee__group">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Prompting</span><span>Claude</span><span>ChatGPT</span><span>Higgsfield</span><span>UI/UX</span><span>Game Dev</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03 — ДОСТИЖЕНИЯ ================= -->
+    <section class="section achievements" id="achievements">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-head__num">03</span>
+          <span data-en="Achievements">Достижения</span>
+        </div>
+        <h2 class="section-title reveal" data-en="Projects that are <span class=&quot;grad&quot;>already in action</span>">Проекты, которые <span class="grad">уже в деле</span></h2>
+
+        <div class="stats" data-spotlight data-stagger>
+          <div class="stat spot reveal"><b data-count="3">03</b><span data-en="projects in portfolio">проекта в портфолио</span></div>
+          <div class="stat spot reveal"><b data-count="2">02</b><span data-en="launched and live">запущены и работают</span></div>
+          <div class="stat spot reveal"><b data-count="1">01</b><span data-en="in active development">в активной разработке</span></div>
+          <div class="stat spot reveal"><b>∞</b><span data-en="desire to grow">желание расти</span></div>
+        </div>
+
+        <div class="projects" data-stagger>
+          <!-- Проект 1: сайт английского -->
+          <article class="project project--featured reveal" data-tilt="3" data-cursor="Открыть" data-cursor-en="Open">
+            <div class="project__visual pv-english" aria-hidden="true">
+              <div class="pv-english__big">Aa</div>
+              <span class="chip" style="--x:8%;--y:14%;--fd:0s">Hello! 👋</span>
+              <span class="chip" style="--x:56%;--y:10%;--fd:-2s">Vocabulary</span>
+              <span class="chip" style="--x:66%;--y:46%;--fd:-3.5s">Speaking</span>
+              <span class="chip" style="--x:6%;--y:72%;--fd:-4.5s">Grammar</span>
+              <span class="chip chip--ok" style="--x:44%;--y:80%;--fd:-1s">✓ Lesson done</span>
+            </div>
+            <div class="project__info">
+              <span class="status status--live" data-en="Live">Запущен</span>
+              <h3 data-en="English learning website">Сайт для изучения английского</h3>
+              <p data-en="My first launched project: a platform that helps people learn English. I went all the way - from idea and design to going live.">Мой первый запущенный проект: платформа, которая помогает учить английский язык. Прошёл весь путь - от идеи и дизайна до запуска в интернете.</p>
+              <div class="tags"><span class="tag">Web</span><span class="tag">EdTech</span><span class="tag">AI-assisted</span></div>
+              <a href="https://fluent-wdo6.onrender.com" class="project__link" target="_blank" rel="noopener">
+                <span data-en="Visit website">Открыть сайт</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Проект 2: веб-игра (запущена) — картинка справа -->
+          <article class="project project--featured project--reverse reveal" data-tilt="3" data-cursor="Играть" data-cursor-en="Play">
+            <div class="project__visual pv-game" aria-hidden="true">
+              <div class="pv-game__hud"><span>LVL 01</span><span>★ 0042</span><span>♥♥♥</span></div>
+              <div class="pv-game__cloud" style="--cy:22%;--cd:16s;--cdl:-4s"></div>
+              <div class="pv-game__cloud pv-game__cloud--sm" style="--cy:36%;--cd:24s;--cdl:-15s"></div>
+              <div class="pv-game__stage">
+                <div class="pv-game__coin"></div>
+                <div class="pv-game__block"></div>
+                <div class="pv-game__player"></div>
+                <div class="pv-game__ground"></div>
+              </div>
+            </div>
+            <div class="project__info">
+              <span class="status status--live" data-en="Live">Запущен</span>
+              <h3 data-en="Web game">Веб-игра</h3>
+              <p data-en="A browser game you can play right on the web: mechanics, animation and lots of iterations for perfect gameplay.">Браузерная игра, в которую можно играть прямо на сайте: механика, анимации и много итераций ради идеального геймплея.</p>
+              <!-- ✏️ Вставь ссылку на игру вместо # -->
+              <a href="https://asyk-atu.onrender.com" class="project__link" target="_blank" rel="noopener">
+                <span data-en="Play">Играть</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Проект 3: приложение (в разработке) — картинка слева -->
+          <article class="project project--featured reveal" data-tilt="3">
+            <div class="project__visual pv-app" aria-hidden="true">
+              <div class="phone">
+                <div class="phone__notch"></div>
+                <div class="sk sk--title"></div>
+                <div class="sk sk--card"></div>
+                <div class="sk-row"><div class="sk sk--sq"></div><div class="sk sk--sq"></div></div>
+                <div class="sk sk--line"></div>
+                <div class="sk sk--line sk--short"></div>
+              </div>
+            </div>
+            <div class="project__info">
+              <span class="status status--dev" data-en="In development">В разработке</span>
+              <h3 data-en="My own app">Собственное приложение</h3>
+              <p data-en="Building an app from scratch: architecture, logic and interface. Applying my own approach to AI: planning, coding together with AI, analyzing and improving.">Разрабатываю приложение с нуля: продумываю архитектуру, логику и интерфейс. Применяю свой подход в использовании ИИ - продумываю, работаю с ИИ над кодом, анализирую и улучшаю.</p>
+              <span class="project__soon" data-en="Release coming soon">Скоро релиз</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Таймлайн -->
+        <div class="timeline">
+          <div class="timeline__head reveal">
+            <h3 data-en="My journey">Мой путь</h3>
+            <p data-en="From first ideas to my own products.">От первых идей к собственным продуктам.</p>
+          </div>
+          <div class="timeline__list">
+            <span class="timeline__line" aria-hidden="true"><span></span></span>
+            <ol>
+            <li class="tl-item reveal">
+              <span class="tl-item__tag" data-en="Start">Старт</span>
+              <h4 data-en="Getting started with programming and Java">Знакомство с программированием и Java</h4>
+              <p data-en="Got into programming and my first programming language - and realized I want to create technology, not just use it.">Знакомство с программированием и первым языком программирования. Понял, что хочу не просто пользоваться технологиями, а создавать их.</p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-item__tag" data-en="Skill">Навык</span>
+              <h4 data-en="Prompting">Писать промпты</h4>
+              <p data-en="Learned to give AI tasks that produce predictable, high-quality results.">Научился ставить ИИ задачи так, чтобы получать предсказуемый и качественный результат.</p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-item__tag" data-en="Launch">Запуск</span>
+              <h4 data-en="English website goes live">Сайт английского - в сети</h4>
+              <p data-en="My first project shipped to release. Key lesson: launch is only the beginning.">Первый проект, доведённый до релиза. Главный урок: запуск - это только начало.</p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-item__tag" data-en="Now">Сейчас</span>
+              <h4 data-en="App &amp; web game">Приложение и веб-игра</h4>
+              <p data-en="Developing two projects in parallel, leveling up in architecture, code and logic.">Параллельно развиваю два проекта и прокачиваю архитектуру, код и логику.</p>
+            </li>
+            <li class="tl-item reveal">
+              <span class="tl-item__tag" data-en="Next">Дальше</span>
+              <h4 data-en="Professional IT specialist">Профессиональный IT-специалист</h4>
+              <p data-en="The goal: build products used by thousands of people and grow alongside strong developers.">Цель: разрабатывать продукты, которыми пользуются тысячи людей, и расти в команде сильных разработчиков.</p>
+            </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 04 — КОНТАКТЫ ================= -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-head__num">04</span>
+          <span data-en="Contact">Контакты</span>
+        </div>
+
+        <h2 class="contact__title reveal" data-en="Interested?<br><span class=&quot;grad&quot;>Here's my contact info</span>">Интересно?<br><span class="grad">Тогда вот мои контакты</span></h2>
+        <p class="contact__text reveal" data-en="Open to new knowledge, projects, connections, collaborations and conversations. Write to me - I'll be happy to connect.">Открыт к новым знаниям, проектам, знакомствам, коллаборациям и разговорам. Пиши - буду рад знакомству.</p>
+
+        <button class="email-copy reveal" id="emailCopy" type="button" data-email="alibek.meirbekov@narxoz.kz" data-magnetic="0.15">
+          <span class="email-copy__addr">alibek.meirbekov@narxoz.kz</span>
+          <span class="email-copy__hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-en="Click to copy">Нажми, чтобы скопировать</span>
+          </span>
+        </button>
+
+        <div class="socials" data-spotlight data-stagger>
+          <a class="social spot reveal" href="https://t.me/Alibek_M9" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span><span class="social__name">Telegram</span><span class="social__handle">@Alibek_M9</span></span>
+            <svg class="social__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <a class="social spot reveal" href="https://github.com/mejrbekovalibek103-netizen" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span><span class="social__name">GitHub</span><span class="social__handle">@mejrbekovalibek103-netizen</span></span>
+            <svg class="social__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <a class="social spot reveal" href="https://www.instagram.com/alibekmeirbekov103/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <span><span class="social__name">Instagram</span><span class="social__handle">@alibekmeirbekov103</span></span>
+            <svg class="social__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="outro" aria-hidden="true">
+        <div class="outro__track">
+          <div class="outro__group"><span>Study</span><span>Understand</span><span>Improve</span><span>Repeat</span></div>
+          <div class="outro__group"><span>Study</span><span>Understand</span><span>Improve</span><span>Repeat</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year">2026</span> <span data-en="Alibek">Алибек</span></p>
+      <p data-en="Made with Claude Code and a bit by hand: HTML, CSS, JS + AI">Сделано с Claude Code и немного вручную: HTML, CSS, JS + ИИ</p>
+      <a href="#top" class="to-top" data-magnetic><span data-en="Back to top">Наверх</span> ↑</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
